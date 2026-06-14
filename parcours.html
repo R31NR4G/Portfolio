@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parcours — Jonathan Garnier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0A0E1A; --bg-surface: #111827; --bg-card: #1C2336;
+      --accent-blue: #4FC3F7; --accent-green: #00E5C3;
+      --text-primary: #E0E6F0; --text-muted: #6B7A99; --text-secondary: #B0BEC5;
+      --border: #2A2F3D;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg-primary); color: var(--text-primary);
+      line-height: 1.7; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(79,195,247,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(79,195,247,0.03) 1px, transparent 1px);
+      background-size: 40px 40px; pointer-events: none; z-index: 0;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 3rem; height: 64px;
+      background: rgba(10,14,26,0.85); backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text-primary); text-decoration: none; }
+    .nav-logo span { color: var(--accent-blue); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent-blue); }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 0 3rem; position: relative; z-index: 1; }
+
+    .page-header { padding: 120px 3rem 60px; position: relative; z-index: 1; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      color: var(--accent-green); letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.6rem;
+    }
+    .section-label::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--accent-green); }
+    .page-title { font-family: 'Syne', sans-serif; font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -0.03em; }
+
+    /* TIMELINE */
+    .timeline-section { padding: 0 0 5rem; }
+    .timeline-heading {
+      font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700;
+      color: var(--text-primary); margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .timeline-heading::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 8px; bottom: 8px;
+      width: 0.5px; background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative; margin-bottom: 2.5rem;
+      opacity: 0; transform: translateX(-16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .timeline-item.visible { opacity: 1; transform: none; }
+
+    .timeline-dot {
+      position: absolute; left: -2rem;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--bg-primary); border: 1.5px solid var(--accent-blue);
+      top: 6px; transform: translateX(-4px);
+    }
+    .timeline-dot.green { border-color: var(--accent-green); }
+
+    .timeline-card {
+      background: var(--bg-surface);
+      border: 0.5px solid var(--border);
+      border-radius: 10px; padding: 1.5rem 1.75rem;
+      transition: border-color 0.25s;
+    }
+    .timeline-card:hover { border-color: rgba(79,195,247,0.3); }
+
+    .timeline-meta {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      color: var(--text-muted); margin-bottom: 0.4rem;
+    }
+    .timeline-card h3 {
+      font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .timeline-card .place {
+      font-size: 0.85rem; color: var(--accent-blue); margin-bottom: 0.75rem;
+    }
+    .timeline-card p, .timeline-card li {
+      font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;
+    }
+    .timeline-card ul { list-style: none; padding: 0; }
+    .timeline-card ul li { padding-left: 1rem; position: relative; margin-bottom: 4px; }
+    .timeline-card ul li::before { content: '—'; position: absolute; left: 0; color: var(--accent-blue); font-size: 0.7rem; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+    .tag { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--accent-blue); background: rgba(79,195,247,0.08); border: 0.5px solid rgba(79,195,247,0.25); padding: 3px 10px; border-radius: 4px; }
+    .tag.green { color: var(--accent-green); background: rgba(0,229,195,0.08); border-color: rgba(0,229,195,0.25); }
+
+    /* EXPERIENCE CARDS GRID */
+    .exp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; border: 0.5px solid var(--border); border-radius: 10px; overflow: hidden; margin-top: 1.5rem; }
+    .exp-cell { background: var(--bg-surface); padding: 1.25rem 1.5rem; }
+    .exp-cell h4 { font-size: 0.8rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .exp-cell p { font-size: 0.88rem; color: var(--text-secondary); }
+
+    footer {
+      border-top: 0.5px solid var(--border); padding: 2rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      position: relative; z-index: 1;
+    }
+    footer p { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent-blue); }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+      .page-header, .container { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .exp-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; }
+    }
+    @media (max-width: 600px) { .nav-links { display: none; } }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">JG<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="apropos.html">À propos</a></li>
+      <li><a href="parcours.html" class="active">Parcours</a></li>
+      <li><a href="competences.html">Compétences</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <div class="section-label">Formation & Expérience</div>
+    <h1 class="page-title">Mon Parcours</h1>
+  </div>
+
+  <div class="container">
+
+    <!-- FORMATION -->
+    <div class="timeline-section">
+      <h2 class="timeline-heading">Formation</h2>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">En cours · 2024 → 2027</div>
+            <h3>BUT Réseaux & Télécoms</h3>
+            <div class="place">IUT — spécialité RT</div>
+            <p>Formation axée sur la conception, la configuration et l'administration des réseaux. Compétences en administration système, déploiement de liaisons, programmation réseau et cybersécurité.</p>
+            <div class="tags">
+              <span class="tag">Cisco</span>
+              <span class="tag green">GNS3</span>
+              <span class="tag">Linux</span>
+              <span class="tag green">Python</span>
+              <span class="tag">Wireshark</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">2024 · Lycée Marc Bloch</div>
+            <h3>Bac STI2D — spécialité SIN</h3>
+            <div class="place">Sciences et Technologies de l'Industrie et du Développement Durable — Systèmes d'Information et Numérique</div>
+            <ul>
+              <li>Programmation HTML/CSS, Python, Arduino, Raspberry Pi</li>
+              <li>Électronique : capteurs, actionneurs, traitement du signal</li>
+              <li>Réseaux et IoT : TCP/IP, Wi-Fi, Bluetooth</li>
+              <li>Conception de prototypes et systèmes numériques</li>
+              <li>Introduction à la cybersécurité — Cisco NETACAD</li>
+            </ul>
+            <div class="tags">
+              <span class="tag">Arduino</span>
+              <span class="tag green">IoT</span>
+              <span class="tag">Python</span>
+              <span class="tag green">Électronique</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta">Collège le Ried</div>
+            <h3>Brevet des Collèges (DNB)</h3>
+            <div class="place">Diplôme National du Brevet</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- EXPÉRIENCE -->
+    <div class="timeline-section">
+      <h2 class="timeline-heading">Expérience professionnelle</h2>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-dot green"></div>
+          <div class="timeline-card">
+            <div class="timeline-meta" style="color:var(--accent-green);">Stage · 20/04/2026 → 12/06/2026</div>
+            <h3>Stage Sys Admin — DevCloud</h3>
+            <div class="place" style="color:var(--accent-green);">Fujimune IT (E.I.) · Strasbourg · Ingénierie & simulation numérique</div>
+            <ul style="margin-top: 0.75rem;">
+              <li>Audit de l'infrastructure existante (Fujitsu PRIMERGY TX2540M1 / Windows Server 2012 Hyper-V)</li>
+              <li>Sauvegarde complète des données et VMs avant migration</li>
+              <li>Installation et configuration de Proxmox VE en remplacement</li>
+              <li>Déploiement de VMs KVM et containers LXC sous Linux</li>
+              <li>Migration de tous les services existants vers Proxmox VE open-source</li>
+              <li>Déploiement de services auto-hébergés : NGINX, n8n, HiperClaw</li>
+              <li>Mise en place du monitoring et des sauvegardes automatisées</li>
+              <li>Automatisation des tâches via n8n · Documentation technique complète</li>
+            </ul>
+            <div class="tags" style="margin-top:1rem;">
+              <span class="tag green">Proxmox VE</span>
+              <span class="tag green">KVM</span>
+              <span class="tag green">LXC</span>
+              <span class="tag green">Linux</span>
+              <span class="tag">NGINX</span>
+              <span class="tag">n8n</span>
+              <span class="tag">Windows Server</span>
+              <span class="tag">HiperClaw</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+            <h3>Assistant électricien</h3>
+            <div class="place" style="color: var(--accent-green);">Seth Elec · +33 7 70 18 87 55</div>
+            <ul style="margin-top: 0.75rem;">
+              <li>Installation de câblage électrique dans des bâtiments</li>
+              <li>Pose de prises de courant et d'interrupteurs</li>
+              <li>Installation et maintenance de tableaux électriques</li>
+              <li>Dépannage et réparation de systèmes électriques défectueux</li>
+              <li>Installation de luminaires et systèmes d'éclairage</li>
+              <li>Maintenance d'équipements électriques industriels</li>
+            </ul>
+            <div class="tags">
+              <span class="tag green">Câblage</span>
+              <span class="tag green">Tableaux élec.</span>
+              <span class="tag green">Maintenance</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2025 Jonathan Garnier — Tous droits réservés</p>
+    <div class="footer-links">
+      <a href="https://github.com/R31NR4G" target="_blank">GitHub</a>
+      <a href="apropos.html">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    const items = document.querySelectorAll('.timeline-item');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 120);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    items.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

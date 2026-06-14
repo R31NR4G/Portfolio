@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compétences — Jonathan Garnier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary:#0A0E1A;--bg-surface:#111827;--bg-card:#1C2336;
+      --accent-blue:#4FC3F7;--accent-green:#00E5C3;
+      --text-primary:#E0E6F0;--text-muted:#6B7A99;--text-secondary:#B0BEC5;
+      --border:#2A2F3D;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.7;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(79,195,247,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,195,247,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 3rem;height:64px;background:rgba(10,14,26,.85);backdrop-filter:blur(12px);border-bottom:.5px solid var(--border);}
+    .nav-logo{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--text-primary);text-decoration:none;}
+    .nav-logo span{color:var(--accent-blue);}
+    .nav-links{display:flex;gap:2rem;list-style:none;}
+    .nav-links a{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-muted);text-decoration:none;transition:color .2s;}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent-blue);}
+    .page-header{padding:120px 3rem 40px;position:relative;z-index:1;}
+    .section-label{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--accent-green);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:.6rem;}
+    .section-label::before{content:'';display:inline-block;width:20px;height:1px;background:var(--accent-green);}
+    .page-title{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.03em;}
+
+    /* TABS */
+    .tab-nav{position:relative;z-index:1;display:flex;border-bottom:.5px solid var(--border);padding:0 3rem;overflow-x:auto;gap:0;}
+    .tab-btn{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text-muted);background:none;border:none;padding:1rem 1.5rem;cursor:pointer;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap;}
+    .tab-btn:hover{color:var(--text-primary);}
+    .tab-btn.active{color:var(--accent-blue);border-bottom-color:var(--accent-blue);}
+    .tab-btn .devcloud-badge{font-size:.58rem;color:var(--accent-green);background:rgba(0,229,195,.1);border:.5px solid rgba(0,229,195,.3);padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;}
+    .tab-content{display:none;position:relative;z-index:1;padding:2.5rem 3rem;}
+    .tab-content.active{display:block;}
+
+    /* CONTEXT BLOCK */
+    .ue-context{background:var(--bg-surface);border:.5px solid var(--border);border-left:2px solid var(--accent-blue);border-radius:0 10px 10px 0;padding:1.5rem 2rem;margin-bottom:2rem;}
+    .ue-context h3{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600;color:var(--accent-blue);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.06em;}
+    .ue-context p,.ue-context li{font-size:.88rem;color:var(--text-secondary);line-height:1.8;}
+    .ue-context ul{list-style:none;padding:0;}
+    .ue-context ul li{padding-left:1rem;position:relative;margin-bottom:3px;}
+    .ue-context ul li::before{content:'—';position:absolute;left:0;color:var(--accent-blue);font-size:.7rem;}
+    .context-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border-radius:8px;overflow:hidden;margin-top:1rem;}
+    .context-cell{background:var(--bg-card);padding:.75rem 1rem;}
+    .context-cell .label{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem;}
+    .context-cell .value{font-size:.82rem;color:var(--text-secondary);}
+
+    /* SAE CARDS */
+    .sae-list{display:flex;flex-direction:column;gap:16px;margin-bottom:2rem;}
+    .sae-card{background:var(--bg-surface);border:.5px solid var(--border);border-radius:10px;overflow:hidden;display:grid;grid-template-columns:200px 1fr;transition:border-color .25s;}
+    .sae-card:hover{border-color:rgba(79,195,247,.4);}
+    .sae-img{background:var(--bg-card);display:flex;align-items:center;justify-content:center;min-height:150px;overflow:hidden;}
+    .sae-img img{width:100%;height:100%;object-fit:cover;}
+    .sae-body{padding:1.25rem 1.5rem;}
+    .sae-meta{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--text-muted);margin-bottom:.4rem;}
+    .sae-body h3{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:600;margin-bottom:.6rem;}
+    .sae-body ul{list-style:none;padding:0;font-size:.83rem;color:var(--text-secondary);}
+    .sae-body ul li{padding:2px 0 2px 1rem;position:relative;}
+    .sae-body ul li::before{content:'—';position:absolute;left:0;color:var(--accent-blue);font-size:.7rem;}
+    .sae-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.9rem;flex-wrap:wrap;gap:6px;}
+    .tags{display:flex;flex-wrap:wrap;gap:5px;}
+    .tag{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--accent-blue);background:rgba(79,195,247,.08);border:.5px solid rgba(79,195,247,.25);padding:2px 9px;border-radius:4px;}
+    .tag.green{color:var(--accent-green);background:rgba(0,229,195,.08);border-color:rgba(0,229,195,.25);}
+    .sae-link{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--accent-blue);text-decoration:none;transition:opacity .2s;}
+    .sae-link:hover{opacity:.7;}
+
+    /* REFLEXIVITY */
+    .reflexivity{background:var(--bg-surface);border:.5px solid var(--border);border-radius:10px;padding:1.5rem 1.75rem;margin-bottom:2rem;}
+    .reflexivity h4{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--text-primary);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+    .reflexivity h4::before{content:'↺';color:var(--accent-green);font-size:1rem;}
+    .reflex-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+    .reflex-item{background:var(--bg-card);border-radius:8px;padding:1rem;}
+    .reflex-item .ri-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--accent-green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem;}
+    .reflex-item p{font-size:.82rem;color:var(--text-secondary);line-height:1.7;}
+
+    /* AC SECTION */
+    .ac-section{background:var(--bg-surface);border:.5px solid var(--border);border-radius:10px;padding:1.5rem 1.75rem;}
+    .ac-section h4{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600;color:var(--text-secondary);margin-bottom:1rem;}
+    .ac-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:7px;}
+    .ac-item{display:flex;gap:.75rem;align-items:flex-start;font-size:.83rem;color:var(--text-secondary);}
+    .ac-code{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--accent-blue);background:rgba(79,195,247,.08);border:.5px solid rgba(79,195,247,.2);padding:2px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+    .ac-code.green{color:var(--accent-green);background:rgba(0,229,195,.08);border-color:rgba(0,229,195,.25);}
+    .ac-note{color:var(--text-muted);font-size:.76rem;margin-left:.25rem;}
+
+    /* STAGE CARD */
+    .stage-card{border-color:rgba(0,229,195,.25)!important;}
+    .stage-img-bg{background:linear-gradient(135deg,#0d2b1f,#092b26)!important;}
+
+    footer{border-top:.5px solid var(--border);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
+    footer p{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-muted);}
+    .footer-links{display:flex;gap:1.5rem;}
+    .footer-links a{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--text-muted);text-decoration:none;transition:color .2s;}
+    .footer-links a:hover{color:var(--accent-blue);}
+
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
+    .reveal.visible{opacity:1;transform:none;}
+
+    @media(max-width:900px){
+      nav{padding:0 1.5rem;} .page-header{padding:100px 1.5rem 30px;}
+      .tab-nav{padding:0 1rem;} .tab-content{padding:1.5rem;}
+      .sae-card{grid-template-columns:1fr;} .sae-img{min-height:160px;}
+      .context-grid{grid-template-columns:repeat(2,1fr);}
+      .reflex-grid{grid-template-columns:1fr;}
+      footer{flex-direction:column;gap:1rem;padding:2rem 1.5rem;}
+    }
+    @media(max-width:600px){.nav-links{display:none;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">JG<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="apropos.html">À propos</a></li>
+    <li><a href="parcours.html">Parcours</a></li>
+    <li><a href="competences.html" class="active">Compétences</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="section-label">BUT Réseaux & Télécoms · IUT de Colmar</div>
+  <h1 class="page-title">Mes Compétences</h1>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('administrer',this)">UE 1.1 — Administrer</button>
+  <button class="tab-btn" onclick="switchTab('connecter',this)">UE 1.2 — Connecter</button>
+  <button class="tab-btn" onclick="switchTab('programmer',this)">UE 1.3 — Programmer</button>
+  <button class="tab-btn" onclick="switchTab('orchestrer',this)">UE 4 — Orchestrer<span class="devcloud-badge">DevCloud</span></button>
+  <button class="tab-btn" onclick="switchTab('developper',this)">UE 5 — Développer<span class="devcloud-badge">DevCloud</span></button>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     UE 1.1 — ADMINISTRER
+══════════════════════════════════════════════ -->
+<div id="tab-administrer" class="tab-content active">
+
+  <div class="ue-context reveal">
+    <h3>Contexte de la compétence</h3>
+    <div class="context-grid">
+      <div class="context-cell"><div class="label">Pourquoi</div><div class="value">Assurer le fonctionnement continu d'une infra réseau d'entreprise</div></div>
+      <div class="context-cell"><div class="label">Qui</div><div class="value">Étudiants BUT R&T, encadrants IUT Colmar</div></div>
+      <div class="context-cell"><div class="label">Quoi</div><div class="value">Configuration L2/L3, VLANs, services réseau, ACL, supervision</div></div>
+      <div class="context-cell"><div class="label">Où</div><div class="value">IUT de Colmar — salles réseau & simulateurs GNS3/EVE-NG</div></div>
+      <div class="context-cell"><div class="label">Comment</div><div class="value">Cisco IOS, GNS3, EVE-NG, Wireshark, rsync</div></div>
+    </div>
+  </div>
+
+  <div class="sae-list">
+
+    <div class="sae-card reveal">
+      <div class="sae-img"><img src="Images/eve-ng.jfif" alt="EVE-NG" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta">SAÉ 1.02 · BUT 1 · Fév. 2025</div>
+        <h3>S'initier aux réseaux informatiques</h3>
+        <ul>
+          <li>Création d'un réseau d'entreprise complet sous EVE-NG</li>
+          <li>Configuration d'un routeur et d'un switch Cisco</li>
+          <li>Création de VLANs par service (RIP v2, trunks 802.1Q)</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag">EVE-NG</span><span class="tag green">VLAN</span><span class="tag">RIP v2</span><span class="tag">802.1Q</span></div>
+          <a href="Images/SAE1.02_CahierDesCharges.pdf" class="sae-link" target="_blank">Trace →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sae-card reveal">
+      <div class="sae-img"><img src="Images/gns3.PNG" alt="GNS3" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta">SAÉ 2.01 · BUT 1 · Juin 2025</div>
+        <h3>Construire un réseau d'entreprise</h3>
+        <ul>
+          <li>Topologie simulée GNS3 : commutateurs L2/L3, VLANs, trunks 802.1Q</li>
+          <li>Spanning-Tree, ACLs inter-VLAN, routage statique</li>
+          <li>Déploiement FTP, HTTP, DHCP sur serveurs virtuels + rsync</li>
+          <li>Validation Wireshark, ping, traceroute, documentation complète</li>
+          <li>Téléphonie IP : installation équipements, serveur web et base de données</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag">GNS3</span><span class="tag green">ACL</span><span class="tag">DHCP</span><span class="tag green">ToIP</span><span class="tag">Wireshark</span></div>
+          <a href="Images/sujet-RT12 (2).pdf" class="sae-link" target="_blank">Trace →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sae-card reveal">
+      <div class="sae-img"><img src="Images/sae_multisites.png" alt="Réseau multi-sites" style="object-position:top;" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta">SAÉ 3.01 · BUT 2 · 2025-2026</div>
+        <h3>Réseau Multi-sites — Architecture hiérarchique complète</h3>
+        <ul>
+          <li>Architecture 3 couches : accès (S1-S3), distribution (S4-S5), cœur L3 (S6)</li>
+          <li>VLANs 21-24 (Direction, Info, Finance, Serveurs) + VLAN 200 transit</li>
+          <li>MST sur 3 instances, S6 Root Bridge — élimination des boucles L2</li>
+          <li>Routage inter-VLAN via SVI, DHCP centralisé /24 par VLAN</li>
+          <li>VRRP R1 (master 120) / R2 (backup 110) — VIP 10.242.125.254</li>
+          <li>NAT/PAT sur CE1, accès Internet + tunnel UDP vers Cloud1</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag">GNS3</span><span class="tag green">VRRP</span><span class="tag green">MST</span><span class="tag">SVI</span><span class="tag">NAT/PAT</span><span class="tag green">OSPF</span></div>
+          <a href="Images/SAE___Réseau_Multi-sites-1.pdf" class="sae-link" target="_blank">Trace →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="reflexivity reveal">
+    <h4>Réflexivité — Bilan de compétence</h4>
+    <div class="reflex-grid">
+      <div class="reflex-item">
+        <div class="ri-label">Difficultés & solutions</div>
+        <p>La convergence MST causait des coupures intermittentes lors des tests. J'ai investigué avec <em>show spanning-tree detail</em> et ajusté les priorités de bridge pour forcer S6 comme Root Bridge, stabilisant immédiatement la topologie.</p>
+      </div>
+      <div class="reflex-item">
+        <div class="ri-label">Initiatives & idées</div>
+        <p>J'ai proposé d'ajouter un VLAN 200 dédié au transit routeurs, séparant le trafic de routage du trafic utilisateur — une décision qui a simplifié le débogage et renforcé la sécurité des flux.</p>
+      </div>
+      <div class="reflex-item">
+        <div class="ri-label">Savoir-faire généralisable</div>
+        <p>La démarche hiérarchique (accès / distribution / cœur) est applicable à tout réseau de campus. La rigueur de documentation (schémas, tables d'adressage, procédures) est transférable à tout contexte professionnel.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-section reveal">
+    <h4>Apprentissages critiques validés</h4>
+    <ul class="ac-list">
+      <li class="ac-item"><span class="ac-code">AC11.01</span>Maîtriser les lois fondamentales de l'électricité pour intervenir sur des équipements réseau</li>
+      <li class="ac-item"><span class="ac-code">AC11.02</span>Comprendre l'architecture des systèmes numériques et les principes de communication</li>
+      <li class="ac-item"><span class="ac-code">AC11.03</span>Configurer les fonctions de base du réseau local</li>
+      <li class="ac-item"><span class="ac-code">AC11.04</span>Maîtriser les systèmes d'exploitation pour la configuration et l'administration des réseaux</li>
+      <li class="ac-item"><span class="ac-code">AC11.05</span>Identifier les dysfonctionnements du réseau local et savoir les signaler</li>
+      <li class="ac-item"><span class="ac-code">AC11.06</span>Installer un poste client et expliquer la procédure mise en place</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     UE 1.2 — CONNECTER
+══════════════════════════════════════════════ -->
+<div id="tab-connecter" class="tab-content">
+
+  <div class="ue-context reveal">
+    <h3>Contexte de la compétence</h3>
+    <div class="context-grid">
+      <div class="context-cell"><div class="label">Pourquoi</div><div class="value">Déployer des supports de transmission filaires et sans fil fiables</div></div>
+      <div class="context-cell"><div class="label">Qui</div><div class="value">Étudiants BUT R&T — binômes & groupes projet</div></div>
+      <div class="context-cell"><div class="label">Quoi</div><div class="value">Infrastructure Wi-Fi, câblage, PoE, IoT embarqué, MQTT, VRRP</div></div>
+      <div class="context-cell"><div class="label">Où</div><div class="value">IUT de Colmar — salles techniques et labo électronique</div></div>
+      <div class="context-cell"><div class="label">Comment</div><div class="value">Cisco AP, CAT6 S/FTP, ESP32, Arduino IDE, site-survey mobile</div></div>
+    </div>
+  </div>
+
+  <div class="sae-list">
+
+    <div class="sae-card reveal">
+      <div class="sae-img"><img src="Images/cablage.PNG" alt="Câblage réseau" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta">SAÉ 1.03 · BUT 1 · 2024-2025</div>
+        <h3>Découvrir un dispositif de transmission</h3>
+        <ul>
+          <li>Positionnement stratégique de bornes Wi-Fi Cisco/AP</li>
+          <li>Câblage CAT6 S/FTP, prises murales, panneaux de brassage</li>
+          <li>Alimentation PoE depuis ports dédiés du switch</li>
+          <li>Test de couverture avec application mobile de site-survey</li>
+          <li>Mesure du débit, validation de la qualité de connexion</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag">Wi-Fi</span><span class="tag green">CAT6 S/FTP</span><span class="tag">PoE</span><span class="tag green">Site-survey</span></div>
+          <a href="https://1drv.ms/p/c/b1b4c94721d87f86/EYZ_2CFHybQggLFBAgAAAAAB4y1B49pblpG86BkbA9i9hQ?e=vylldZ" class="sae-link" target="_blank">Trace →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sae-card reveal">
+      <div class="sae-img"><img src="Images/sae_radio.jpg" alt="Web Radio ESP32" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta">SAÉ 2.02 · BUT 1 · 2024-2025</div>
+        <h3>Web Radio — Mesurer et caractériser un signal</h3>
+        <ul>
+          <li>Assemblage Adafruit HUZZAH32 ESP32 + VS1053 en SPI</li>
+          <li>IDE Arduino + bibliothèques ESP32/Baldram — décodage MP3/AAC</li>
+          <li>Réglages audio clavier : volume, basses, aigus, spatialisation</li>
+          <li>WiFiManager : configuration Wi-Fi via page captive</li>
+          <li>Protocole MQTT (PubSubClient) — pilotage depuis Android</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag">ESP32</span><span class="tag green">MQTT</span><span class="tag">Arduino</span><span class="tag green">SPI</span><span class="tag">WiFiManager</span></div>
+          <a href="Images/SAE202-Web_Radio.pdf" class="sae-link" target="_blank">Trace →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sae-card reveal">
+      <div class="sae-img"><img src="Images/sae_multisites.png" alt="Réseau multi-sites connexion" style="object-position:center;" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta">SAÉ 3.01 · BUT 2 · 2025-2026</div>
+        <h3>Réseau Multi-sites — Connexion & haute disponibilité</h3>
+        <ul>
+          <li>Déploiement de liens trunks 802.1Q sur toute la topologie multi-switchs</li>
+          <li>Connexion inter-sites via R1, R2 et CE1 (routeur opérateur)</li>
+          <li>VRRP : basculement transparent R1→R2 validé par tests</li>
+          <li>Tunnel UDP vers Cloud1 pour interconnexion distante</li>
+          <li>NAT/PAT sur CE1 — accès Internet partagé</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag green">VRRP</span><span class="tag">802.1Q</span><span class="tag green">NAT/PAT</span><span class="tag">Tunnel UDP</span></div>
+          <a href="Images/SAE___Réseau_Multi-sites-1.pdf" class="sae-link" target="_blank">Trace →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="reflexivity reveal">
+    <h4>Réflexivité — Bilan de compétence</h4>
+    <div class="reflex-grid">
+      <div class="reflex-item">
+        <div class="ri-label">Difficultés & solutions</div>
+        <p>La Web Radio perdait le flux après quelques minutes. En analysant les logs Arduino et les trames MQTT avec Wireshark, j'ai identifié un timeout de keepalive et l'ai corrigé en ajustant l'intervalle de publication PubSubClient.</p>
+      </div>
+      <div class="reflex-item">
+        <div class="ri-label">Initiatives & idées</div>
+        <p>J'ai intégré WiFiManager de ma propre initiative, évitant de coder les identifiants Wi-Fi en dur dans le firmware — rendant le projet réutilisable dans n'importe quel environnement sans recompilation.</p>
+      </div>
+      <div class="reflex-item">
+        <div class="ri-label">Savoir-faire généralisable</div>
+        <p>La méthodologie site-survey (mesure, ajustement, validation) s'applique à tout déploiement Wi-Fi professionnel. La maîtrise MQTT est directement transférable aux projets IoT industriels.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-section reveal">
+    <h4>Apprentissages critiques validés</h4>
+    <ul class="ac-list">
+      <li class="ac-item"><span class="ac-code">AC12.01</span>Mesurer, analyser et commenter les signaux</li>
+      <li class="ac-item"><span class="ac-code">AC12.02</span>Caractériser des systèmes de transmissions élémentaires</li>
+      <li class="ac-item"><span class="ac-code">AC12.03</span>Déployer des supports de transmission</li>
+      <li class="ac-item"><span class="ac-code">AC12.04</span>Connecter les systèmes de ToIP</li>
+      <li class="ac-item"><span class="ac-code">AC12.05</span>Communiquer avec un tiers et adapter son discours</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     UE 1.3 — PROGRAMMER
+══════════════════════════════════════════════ -->
+<div id="tab-programmer" class="tab-content">
+
+  <div class="ue-context reveal">
+    <h3>Contexte de la compétence</h3>
+    <div class="context-grid">
+      <div class="context-cell"><div class="label">Pourquoi</div><div class="value">Automatiser les tâches réseau et produire des outils d'analyse fiables</div></div>
+      <div class="context-cell"><div class="label">Qui</div><div class="value">Étudiants BUT R&T — projets individuels et en binôme</div></div>
+      <div class="context-cell"><div class="label">Quoi</div><div class="value">Scripts Python/PowerShell, sites web HTML/CSS, traitement de données</div></div>
+      <div class="context-cell"><div class="label">Où</div><div class="value">IUT de Colmar — salles informatiques</div></div>
+      <div class="context-cell"><div class="label">Comment</div><div class="value">Python, PowerShell, HTML/CSS, pandas, matplotlib, WMI/CIM</div></div>
+    </div>
+  </div>
+
+  <div class="sae-list">
+
+    <div class="sae-card reveal">
+      <div class="sae-img"><img src="Images/site-web.PNG" alt="Site web portfolio" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta">SAÉ 1.04 · BUT 1 · 2024-2025</div>
+        <h3>Se présenter sur Internet</h3>
+        <ul>
+          <li>HTML sémantique : header, nav, sections, footer</li>
+          <li>CSS avancé : Flexbox, Grid, media queries responsive</li>
+          <li>Transitions hover, compression d'images, lazy-load</li>
+          <li>Hébergement GitHub Pages</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag">HTML5</span><span class="tag green">CSS3</span><span class="tag">Flexbox</span><span class="tag green">Responsive</span></div>
+          <a href="https://github.com/R31NR4G/PortfolioGJ" class="sae-link" target="_blank">GitHub →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sae-card reveal">
+      <div class="sae-img"><img src="Images/searchgraph.PNG" alt="Analyseur disque" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta">SAÉ 1.05 · BUT 1 · 2024-2025</div>
+        <h3>Traiter des données — Analyseur de disques durs</h3>
+        <ul>
+          <li>PowerShell : Get-PhysicalDisk, WMI/CIM, inventaire multi-machines</li>
+          <li>Python : parsing CSV/txt, agrégation pandas, nettoyage données</li>
+          <li>Graphiques matplotlib : camemberts, histogrammes d'état</li>
+          <li>Système de journalisation (logging) et gestion des erreurs</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag">Python</span><span class="tag green">PowerShell</span><span class="tag">pandas</span><span class="tag green">matplotlib</span><span class="tag">WMI</span></div>
+          <a href="https://github.com/R31NR4G/SAE" class="sae-link" target="_blank">GitHub →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="reflexivity reveal">
+    <h4>Réflexivité — Bilan de compétence</h4>
+    <div class="reflex-grid">
+      <div class="reflex-item">
+        <div class="ri-label">Difficultés & solutions</div>
+        <p>Les sorties WMI variaient selon les versions de Windows, cassant le parsing. J'ai utilisé des expressions régulières robustes avec le module <em>re</em> et ajouté des cas de fallback pour les champs manquants, rendant le script universel.</p>
+      </div>
+      <div class="reflex-item">
+        <div class="ri-label">Initiatives & idées</div>
+        <p>J'ai ajouté un système de logs colorés par niveau (INFO/WARNING/ERROR) non demandé dans le cahier des charges, facilitant le diagnostic rapide lors des tests sur plusieurs machines simultanément.</p>
+      </div>
+      <div class="reflex-item">
+        <div class="ri-label">Savoir-faire généralisable</div>
+        <p>La pipeline données brutes → nettoyage → visualisation est applicable à n'importe quel traitement de logs réseau (syslog, SNMP traps). La maîtrise PowerShell/WMI est directement utile en administration Windows Server.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-section reveal">
+    <h4>Apprentissages critiques validés</h4>
+    <ul class="ac-list">
+      <li class="ac-item"><span class="ac-code">AC13.01</span>Utiliser un système informatique et ses outils</li>
+      <li class="ac-item"><span class="ac-code">AC13.02</span>Lire, exécuter, corriger et modifier un programme</li>
+      <li class="ac-item"><span class="ac-code">AC13.03</span>Traduire un algorithme dans un langage et pour un environnement donné</li>
+      <li class="ac-item"><span class="ac-code">AC13.04</span>Connaître l'architecture et les technologies d'un site web</li>
+      <li class="ac-item"><span class="ac-code">AC13.05</span>Choisir les mécanismes de gestion de données adaptés</li>
+      <li class="ac-item"><span class="ac-code">AC13.06</span>S'intégrer dans un environnement propice au développement collaboratif</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     UE 4 — ORCHESTRER (DevCloud)
+══════════════════════════════════════════════ -->
+<div id="tab-orchestrer" class="tab-content">
+
+  <div class="ue-context reveal" style="border-left-color:var(--accent-green);">
+    <h3 style="color:var(--accent-green);">Contexte de la compétence — Parcours DevCloud</h3>
+    <div class="context-grid">
+      <div class="context-cell"><div class="label">Pourquoi</div><div class="value">Moderniser une infra vieillissante sans supervision ni sauvegarde fiable</div></div>
+      <div class="context-cell"><div class="label">Qui</div><div class="value">Yo FUJISO (tuteur), Jonathan Garnier — Fujimune IT, Strasbourg</div></div>
+      <div class="context-cell"><div class="label">Quoi</div><div class="value">Migration Windows Server 2012/Hyper-V → Proxmox VE open-source</div></div>
+      <div class="context-cell"><div class="label">Où / Quand</div><div class="value">Stage · Fujimune IT · 20/04/2026 – 12/06/2026</div></div>
+      <div class="context-cell"><div class="label">Comment</div><div class="value">Proxmox VE, KVM, LXC, Linux Debian, monitoring intégré</div></div>
+    </div>
+  </div>
+
+  <div class="sae-list">
+
+    <div class="sae-card stage-card reveal">
+      <div class="sae-img stage-img-bg"><img src="Images/stage_poster.png" alt="Affiche stage Fujimune IT" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta" style="color:var(--accent-green);">Stage SysAdmin · Fujimune IT · Avr.–Juin 2026</div>
+        <h3>Modernisation & virtualisation de l'infrastructure d'une TPE</h3>
+        <ul>
+          <li>Audit complet de l'infra existante (Fujitsu PRIMERGY TX2540M1 / WS 2012 / Hyper-V)</li>
+          <li>Installation et configuration de Proxmox VE sur le serveur physique</li>
+          <li>Déploiement de VMs KVM et containers LXC sous Linux Debian</li>
+          <li>Migration de tous les services Windows vers Proxmox open-source</li>
+          <li>Services déployés : Nginx Proxy Manager, Pi-hole, n8n</li>
+          <li>Mise en place du monitoring intégré Proxmox et sauvegardes automatisées</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag green">Proxmox VE</span><span class="tag green">KVM</span><span class="tag green">LXC</span><span class="tag">Linux</span><span class="tag">Pi-hole</span><span class="tag green">Monitoring</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sae-card reveal">
+      <div class="sae-img"><img src="Images/gns3.PNG" alt="SAE BUT 2 Orchestrer" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta">SAÉ BUT 2 · AC24 DevCloud</div>
+        <h3>Assister l'administrateur infrastructure et Cloud</h3>
+        <ul>
+          <li>Proposition et choix de Proxmox VE comme solution Cloud privé adaptée à la TPE</li>
+          <li>Virtualisation de l'environnement complet (VMs + LXC)</li>
+          <li>Utilisation des services Cloud internes : reverse proxy, DNS filtrant, automatisation</li>
+          <li>Analyse des métriques via le dashboard Proxmox (CPU, RAM, stockage, réseau)</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag green">Cloud privé</span><span class="tag green">Virtualisation</span><span class="tag">Métriques</span><span class="tag green">Proxmox</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="reflexivity reveal">
+    <h4>Réflexivité — Bilan de compétence</h4>
+    <div class="reflex-grid">
+      <div class="reflex-item">
+        <div class="ri-label">Difficultés & solutions</div>
+        <p>La migration des VMs Hyper-V vers Proxmox nécessitait une conversion des formats de disque (VHDX → qcow2). J'ai utilisé <em>qemu-img convert</em> et testé chaque VM dans un environnement isolé avant de couper l'ancien serveur, évitant toute perte de données.</p>
+      </div>
+      <div class="reflex-item">
+        <div class="ri-label">Initiatives & idées</div>
+        <p>J'ai proposé d'intégrer Pi-hole comme DNS filtrant au niveau de l'infrastructure entière, bloquant la publicité et les domaines malveillants pour tous les équipements de la TPE sans configuration par poste.</p>
+      </div>
+      <div class="reflex-item">
+        <div class="ri-label">Savoir-faire généralisable</div>
+        <p>La démarche audit → migration → validation est applicable à toute infrastructure d'entreprise. La maîtrise de Proxmox VE (KVM + LXC) est directement transférable aux environnements Cloud hybrides professionnels.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-section reveal">
+    <h4>Apprentissages critiques BUT 2 — Orchestrer</h4>
+    <ul class="ac-list">
+      <li class="ac-item"><span class="ac-code green">AC24.01</span>Proposer une solution Cloud adaptée à l'entreprise <span class="ac-note">— Choix Proxmox VE open-source pour la TPE</span></li>
+      <li class="ac-item"><span class="ac-code green">AC24.02</span>Virtualiser un environnement <span class="ac-note">— VMs KVM + containers LXC déployés</span></li>
+      <li class="ac-item"><span class="ac-code green">AC24.03</span>Utiliser les services du Cloud <span class="ac-note">— Nginx PM, Pi-hole, n8n en production</span></li>
+      <li class="ac-item"><span class="ac-code green">AC24.04</span>Analyser un service Cloud au travers des métriques <span class="ac-note">— Dashboard Proxmox, monitoring continu</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     UE 5 — DÉVELOPPER (DevCloud)
+══════════════════════════════════════════════ -->
+<div id="tab-developper" class="tab-content">
+
+  <div class="ue-context reveal" style="border-left-color:var(--accent-green);">
+    <h3 style="color:var(--accent-green);">Contexte de la compétence — Parcours DevCloud</h3>
+    <div class="context-grid">
+      <div class="context-cell"><div class="label">Pourquoi</div><div class="value">Remplacer des services legacy par des solutions auto-hébergées modernes</div></div>
+      <div class="context-cell"><div class="label">Qui</div><div class="value">Yo FUJISO (tuteur), Jonathan Garnier — Fujimune IT, Strasbourg</div></div>
+      <div class="context-cell"><div class="label">Quoi</div><div class="value">Déploiement de microservices, automatisation n8n, IaC réseau Proxmox</div></div>
+      <div class="context-cell"><div class="label">Où / Quand</div><div class="value">Stage · Fujimune IT · 20/04/2026 – 12/06/2026</div></div>
+      <div class="context-cell"><div class="label">Comment</div><div class="value">LXC containers, NGINX, n8n, HiperClaw, configuration réseau scriptée</div></div>
+    </div>
+  </div>
+
+  <div class="sae-list">
+
+    <div class="sae-card stage-card reveal">
+      <div class="sae-img stage-img-bg"><img src="Images/stage_poster.png" alt="Stage Fujimune IT — services" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta" style="color:var(--accent-green);">Stage SysAdmin · Fujimune IT · Avr.–Juin 2026</div>
+        <h3>Déploiement et automatisation de services auto-hébergés</h3>
+        <ul>
+          <li>Nginx Proxy Manager déployé en LXC — reverse proxy centralisé avec SSL</li>
+          <li>Pi-hole en LXC — DNS filtrant pour toute l'infrastructure</li>
+          <li>n8n en LXC — automatisation des tâches métier (workflows no-code)</li>
+          <li>HiperClaw déployé en environnement virtualisé</li>
+          <li>Configuration réseau Proxmox scriptée (bridges, VLANs, interfaces)</li>
+          <li>Sauvegardes automatisées des VMs et containers via Proxmox Backup</li>
+          <li>Documentation technique complète : schémas, procédures, guides</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag green">n8n</span><span class="tag green">Nginx PM</span><span class="tag green">Pi-hole</span><span class="tag">HiperClaw</span><span class="tag">IaC</span><span class="tag green">Backup</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sae-card reveal">
+      <div class="sae-img"><img src="Images/python.webp" alt="Scripting Python" onerror="this.style.display='none'"></div>
+      <div class="sae-body">
+        <div class="sae-meta">SAÉ BUT 2 · AC25 DevCloud</div>
+        <h3>Développer pour le Cloud — Microservices & IaC</h3>
+        <ul>
+          <li>Chaque service (Nginx, Pi-hole, n8n) isolé dans son propre container LXC</li>
+          <li>Mise en production avec tests de connectivité et validation des flux</li>
+          <li>Configuration réseau Proxmox par scripts Bash (bridges, IP, routing)</li>
+          <li>Documentation des procédures pour maintenabilité et reproductibilité</li>
+        </ul>
+        <div class="sae-footer">
+          <div class="tags"><span class="tag green">Microservices</span><span class="tag green">IaC</span><span class="tag">Bash</span><span class="tag green">LXC</span><span class="tag">Prod</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="reflexivity reveal">
+    <h4>Réflexivité — Bilan de compétence</h4>
+    <div class="reflex-grid">
+      <div class="reflex-item">
+        <div class="ri-label">Difficultés & solutions</div>
+        <p>Nginx Proxy Manager ne résolvait pas les noms DNS internes des autres containers LXC. J'ai configuré Pi-hole comme résolveur DNS local dans les paramètres réseau de Proxmox, permettant à tous les services de communiquer par nom plutôt que par IP.</p>
+      </div>
+      <div class="reflex-item">
+        <div class="ri-label">Initiatives & idées</div>
+        <p>J'ai proposé d'automatiser les tâches récurrentes de la TPE avec n8n (envoi de rapports, notifications) sans que cela soit dans le cahier des charges initial — démontrant de l'autonomie et un sens de la valeur ajoutée.</p>
+      </div>
+      <div class="reflex-item">
+        <div class="ri-label">Savoir-faire généralisable</div>
+        <p>L'approche "un service = un container" est le fondement de l'architecture microservices en production. La maîtrise de la configuration réseau par code (IaC) est directement transférable à Terraform, Ansible ou tout outil DevOps.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ac-section reveal">
+    <h4>Apprentissages critiques BUT 2 — Développer</h4>
+    <ul class="ac-list">
+      <li class="ac-item"><span class="ac-code green">AC25.01</span>Développer un microservice <span class="ac-note">— Nginx PM, Pi-hole, n8n isolés en LXC</span></li>
+      <li class="ac-item"><span class="ac-code green">AC25.02</span>Mettre en production une application <span class="ac-note">— Services validés et déployés chez client réel</span></li>
+      <li class="ac-item"><span class="ac-code green">AC25.03</span>Programmer son réseau par le code <span class="ac-note">— Config Proxmox bridges/VLANs scriptée</span></li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 Jonathan Garnier — Tous droits réservés</p>
+  <div class="footer-links">
+    <a href="https://github.com/R31NR4G" target="_blank">GitHub</a>
+    <a href="apropos.html">Contact</a>
+  </div>
+</footer>
+
+<script>
+  function switchTab(name, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+    setTimeout(() => {
+      document.querySelectorAll('#tab-' + name + ' .reveal').forEach(el => {
+        el.classList.remove('visible');
+        void el.offsetWidth;
+        el.classList.add('visible');
+      });
+    }, 50);
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

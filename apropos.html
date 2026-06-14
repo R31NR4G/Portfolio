@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>À propos — Jonathan Garnier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0A0E1A; --bg-surface: #111827; --bg-card: #1C2336;
+      --accent-blue: #4FC3F7; --accent-green: #00E5C3;
+      --text-primary: #E0E6F0; --text-muted: #6B7A99; --text-secondary: #B0BEC5;
+      --border: #2A2F3D;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background-color: var(--bg-primary); color: var(--text-primary); line-height: 1.7; overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image: linear-gradient(rgba(79,195,247,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(79,195,247,0.03) 1px, transparent 1px);
+      background-size: 40px 40px; pointer-events: none; z-index: 0;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 3rem; height: 64px;
+      background: rgba(10,14,26,0.85); backdrop-filter: blur(12px);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-logo { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text-primary); text-decoration: none; }
+    .nav-logo span { color: var(--accent-blue); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent-blue); }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 3rem; position: relative; z-index: 1; }
+
+    /* HERO */
+    .about-hero {
+      padding: 140px 3rem 80px;
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 340px;
+      gap: 4rem; align-items: start;
+      max-width: 960px; margin: 0 auto;
+    }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+      color: var(--accent-green); letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.6rem;
+    }
+    .section-label::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--accent-green); }
+    .about-name { font-family: 'Syne', sans-serif; font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1.25rem; }
+    .about-bio { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem; }
+    .about-bio strong { color: var(--text-primary); font-weight: 500; }
+
+    /* AVATAR CARD */
+    .avatar-card {
+      background: var(--bg-surface); border: 0.5px solid var(--border);
+      border-radius: 12px; padding: 2rem; text-align: center;
+    }
+    .avatar {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(79,195,247,0.2), rgba(0,229,195,0.2));
+      border: 1.5px solid rgba(79,195,247,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700;
+      color: var(--accent-blue); margin: 0 auto 1rem;
+    }
+    .avatar-name { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .avatar-role { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--accent-green); margin-bottom: 1.25rem; }
+    .avatar-info { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+    .info-row { display: flex; gap: 0.75rem; align-items: center; font-size: 0.82rem; }
+    .info-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-muted); width: 72px; flex-shrink: 0; }
+    .info-value { color: var(--text-secondary); }
+
+    /* SECTIONS */
+    .content-section { padding: 3rem 0; border-top: 0.5px solid var(--border); }
+    .section-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+    /* SKILLS GRID */
+    .skills-block { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .skill-group {
+      background: var(--bg-surface); border: 0.5px solid var(--border);
+      border-radius: 10px; padding: 1.25rem;
+    }
+    .skill-group h4 { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--accent-blue); margin-bottom: 0.75rem; letter-spacing: 0.06em; }
+    .skill-group ul { list-style: none; padding: 0; }
+    .skill-group ul li { font-size: 0.85rem; color: var(--text-secondary); padding: 3px 0; border-bottom: 0.5px solid var(--border); }
+    .skill-group ul li:last-child { border-bottom: none; }
+
+    /* PERSONAL */
+    .perso-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .perso-card {
+      background: var(--bg-surface); border: 0.5px solid var(--border);
+      border-radius: 10px; padding: 1.25rem;
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .perso-icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1; }
+    .perso-label { font-size: 0.72rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-bottom: 0.25rem; }
+    .perso-value { font-size: 0.88rem; color: var(--text-secondary); }
+
+    /* CONTACT */
+    .contact-strip {
+      background: var(--bg-surface); border: 0.5px solid var(--border);
+      border-radius: 12px; padding: 2rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem; flex-wrap: wrap;
+    }
+    .contact-strip h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .contact-strip p { font-size: 0.88rem; color: var(--text-muted); }
+    .contact-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+      color: var(--bg-primary); background: var(--accent-blue);
+      border: none; padding: 10px 22px; border-radius: 6px;
+      cursor: pointer; text-decoration: none; transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-outline {
+      font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+      color: var(--accent-blue); background: transparent;
+      border: 0.5px solid var(--accent-blue); padding: 10px 22px; border-radius: 6px;
+      cursor: pointer; text-decoration: none; transition: background 0.2s;
+    }
+    .btn-outline:hover { background: rgba(79,195,247,0.08); }
+
+    footer {
+      border-top: 0.5px solid var(--border); padding: 2rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      position: relative; z-index: 1; margin-top: 4rem;
+    }
+    footer p { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent-blue); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+      .about-hero { grid-template-columns: 1fr; padding: 100px 1.5rem 40px; gap: 2rem; }
+      .container { padding: 0 1.5rem; }
+      .skills-block { grid-template-columns: 1fr; }
+      .perso-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1rem; padding: 2rem 1.5rem; }
+    }
+    @media (max-width: 600px) { .nav-links { display: none; } }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">JG<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="apropos.html" class="active">À propos</a></li>
+      <li><a href="parcours.html">Parcours</a></li>
+      <li><a href="competences.html">Compétences</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="about-hero">
+    <div>
+      <div class="section-label">À propos</div>
+      <h1 class="about-name">Jonathan Garnier</h1>
+      <p class="about-bio">
+        Étudiant en <strong>BUT Réseaux & Télécoms</strong>, spécialité <strong>DevCloud</strong>, je suis avant tout passionné par le réseau pur — switches, routeurs, protocoles et tout ce qui fait circuler les données.
+      </p>
+      <p class="about-bio">
+        Ce qui me plaît : comprendre comment un paquet voyage d'un point A à un point B, configurer du routage dynamique, segmenter un réseau en VLANs, diagnostiquer une panne avec Wireshark. Le côté concret et technique du réseau, c'est ce qui me motive.
+      </p>
+      <p class="about-bio">
+        Ma spécialité DevCloud me permet d'aller plus loin en ajoutant la virtualisation et l'automatisation à ces bases réseau solides.
+      </p>
+    </div>
+    <div class="avatar-card">
+      <div class="avatar">JG</div>
+      <div class="avatar-name">Jonathan Garnier</div>
+      <div class="avatar-role">BUT R&T · DevCloud</div>
+      <div class="avatar-info">
+        <div class="info-row">
+          <span class="info-label">Langues</span>
+          <span class="info-value">Français, Anglais</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">GitHub</span>
+          <span class="info-value" style="color: var(--accent-blue);">R31NR4G</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Dispo</span>
+          <span class="info-value" style="color: var(--accent-green);">Stage / alternance</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- COMPÉTENCES -->
+    <div class="content-section reveal">
+      <h2 class="section-title">Compétences</h2>
+      <div class="skills-block">
+        <div class="skill-group">
+          <h4>Réseaux</h4>
+          <ul>
+            <li>OSI/TCP-IP, IPv4/IPv6</li>
+            <li>DHCP, DNS, OSPF, RIP</li>
+            <li>VRRP, BGP, MPLS</li>
+            <li>Packet Tracer, GNS3, EVE-NG</li>
+            <li>Wireshark</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h4>Système & Cloud</h4>
+          <ul>
+            <li>Linux (Debian, Ubuntu)</li>
+            <li>Windows Server, Active Directory</li>
+            <li>Proxmox VE, VMware, VirtualBox</li>
+            <li>Docker, LXC</li>
+            <li>Python, Bash, PowerShell</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h4>Certifications & Langues</h4>
+          <ul>
+            <li>Cisco Cybersecurity Introduction</li>
+            <li>Linphone Level 1 (ToIP)</li>
+            <li>CCNA <em style="color:var(--text-muted);font-size:.8em;">(en préparation)</em></li>
+            <li>Français natif · Anglais B2</li>
+            <li>Japonais A2</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CV -->
+    <div class="content-section reveal">
+      <h2 class="section-title">Curriculum Vitae</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <a href="Images/CVJonathanGarnier_EN.pdf" target="_blank" style="background:var(--bg-surface);border:.5px solid var(--border);border-radius:10px;padding:1.5rem;text-decoration:none;display:flex;align-items:center;gap:1rem;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(79,195,247,.4)'" onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4FC3F7" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:600;color:var(--text-primary);">CV Anglais</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--text-muted);">CVJonathanGarnier_EN.pdf</div>
+          </div>
+        </a>
+        <a href="Images/CVJonathanGarnier_FR.pdf" target="_blank" style="background:var(--bg-surface);border:.5px solid var(--border);border-radius:10px;padding:1.5rem;text-decoration:none;display:flex;align-items:center;gap:1rem;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(0,229,195,.4)'" onmouseout="this.style.borderColor='var(--border)'">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00E5C3" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:600;color:var(--text-primary);">CV Français</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--text-muted);">CVJonathanGarnier_FR.pdf</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2025 Jonathan Garnier — Tous droits réservés</p>
+    <div class="footer-links">
+      <a href="https://github.com/R31NR4G" target="_blank">GitHub</a>
+    </div>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
